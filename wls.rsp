@@ -1,0 +1,5 @@
+[ENGINE]
+Response File Version=1.0.0.0.0
+[GENERIC]
+ORACLE_HOME=/home/ec2-user/Oracle/Middleware/Oracle_home
+INSTALL_TYPE=WebLogic Server
