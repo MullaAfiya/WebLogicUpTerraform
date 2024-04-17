@@ -1,16 +1,3 @@
-/*locals {
-  connection = {
-    type        = "ssh"
-      user        = var.user  # Update for your AMI's default user
-      private_key = file("C:/Terraform/create-domain/oracleweblogickey.pem")
-      host        = self.public_ip  # 'self' refers to the current resource (aws_instance.weblogic_instance)
-
-  }
-
-}
-
-*/
-
 
 variable "user" {
   default = "ec2-user"  
@@ -19,38 +6,38 @@ variable "user" {
 
 
 #Master
-resource "aws_instance" "Master1" { 
+resource "aws_instance" "WebLogicServer" { 
   ami           = "ami-09298640a92b2d12c"
-  instance_type = "t3.medium"
-  key_name = "oracleweblogickey" 
+  instance_type = "t2.micro"
+  key_name = "Masterpem" 
  root_block_device {
     volume_size = 100  # Set the root volume size in GB
   }
 
   tags = {
-    Name = "Master1"
+    Name = "WebLogicServer"
   }  
 
 
   # File provisioners to copy files to the remote machine
   provisioner "file" {
-    source      = "C:/Terraform/create-domain/wls.loc"
+    source      = "/home/ec2-user/Project/WebLogicUpTerraform/wls.loc"
     destination = "/tmp/wls.loc"
     connection {
       type        = "ssh"
       user        = var.user  # Update for your AMI's default user
-      private_key = file("C:/Terraform/create-domain/oracleweblogickey.pem")
+      private_key = file("C:/Users/Afiya/Downloads/Masterpem.pem")
       host        = self.public_ip  # 'self' refers to the current resource (aws_instance.weblogic_instance)
     }
     }
   
   provisioner "file" {
-    source      = "C:/Terraform/create-domain/wls.rsp"
+    source      = "/home/ec2-user/Project/WebLogicUpTerraform/wls.rsp"
     destination = "/tmp/wls.rsp"
     connection {
       type        = "ssh"
       user        = var.user  # Update for your AMI's default user
-      private_key = file("C:/Terraform/create-domain/oracleweblogickey.pem")
+      private_key = file("C:/Users/Afiya/Downloads/Masterpem.pem")
       host        = self.public_ip  # 'self' refers to the current resource (aws_instance.weblogic_instance)
     }
     }
@@ -58,68 +45,68 @@ resource "aws_instance" "Master1" {
 #dynamic block - do rnd
   
   provisioner "file" {
-    source      = "C:/Terraform/create-domain/swap-file.sh"
+    source      = "/home/ec2-user/Project/WebLogicUpTerraform/swap-file.sh"
     destination = "/tmp/swap-file.sh"
     connection {
       type        = "ssh"
       user        = var.user  # Update for your AMI's default user
-      private_key = file("C:/Terraform/create-domain/oracleweblogickey.pem")
+      private_key = file("C:/Users/Afiya/Downloads/Masterpem.pem")
       host        = self.public_ip  # 'self' refers to the current resource (aws_instance.weblogic_instance)
     }
   }
 
 
   provisioner "file" {
-    source      = "C:/Terraform/create-domain/wget.sh"
+    source      = "/home/ec2-user/Project/WebLogicUpTerraform/wget.sh"
     destination = "/tmp/wget.sh"
     connection {
       type        = "ssh"
       user        = var.user  # Update for your AMI's default user
-      private_key = file("C:/Terraform/create-domain/oracleweblogickey.pem")
+      private_key = file("C:/Users/Afiya/Downloads/Masterpem.pem")
       host        = self.public_ip  # 'self' refers to the current resource (aws_instance.weblogic_instance)
     }
   }
 
   provisioner "file" {
-    source      = "C:/Terraform/create-domain/runweblogic.sh"
+    source      = "/home/ec2-user/Project/WebLogicUpTerraform/runweblogic.sh"
     destination = "/tmp/runweblogic.sh"
     connection {
       type        = "ssh"
       user        = var.user  # Update for your AMI's default user
-      private_key = file("C:/Terraform/create-domain/oracleweblogickey.pem")
+      private_key = file("C:/Users/Afiya/Downloads/Masterpem.pem")
       host        = self.public_ip  # 'self' refers to the current resource (aws_instance.weblogic_instance)
     }
   }
 
   provisioner "file" {
-    source      = "C:/Terraform/create-domain/weblogicstart.sh"
+    source      = "/home/ec2-user/Project/WebLogicUpTerraform/weblogicstart.sh"
     destination = "/tmp/weblogicstart.sh"
     connection {
       type        = "ssh"
       user        = var.user  # Update for your AMI's default user
-      private_key = file("C:/Terraform/create-domain/oracleweblogickey.pem")
+      private_key = file("C:/Users/Afiya/Downloads/Masterpem.pem")
       host        = self.public_ip  # 'self' refers to the current resource (aws_instance.weblogic_instance)
     }
   }
 
   provisioner "file" {
-    source      = "C:/Terraform/create-domain/create-domain.py"
+    source      = "/home/ec2-user/Project/WebLogicUpTerraform/create-domain.py"
     destination = "/tmp/create-domain.py"
     connection {
       type        = "ssh"
       user        = var.user  # Update for your AMI's default user
-      private_key = file("C:/Terraform/create-domain/oracleweblogickey.pem")
+      private_key = file("C:/Users/Afiya/Downloads/Masterpem.pem")
       host        = self.public_ip  # 'self' refers to the current resource (aws_instance.weblogic_instance)
     }
   }
 
   provisioner "file" {
-    source      = "C:/Terraform/create-domain/install.sh"
+    source      = "/home/ec2-user/Project/WebLogicUpTerraform/install.sh"
     destination = "/tmp/install.sh"
     connection {
       type        = "ssh"
       user        = var.user  # Update for your AMI's default user
-      private_key = file("C:/Terraform/create-domain/oracleweblogickey.pem")
+      private_key = file("C:/Users/Afiya/Downloads/Masterpem.pem")
       host        = self.public_ip  # 'self' refers to the current resource (aws_instance.weblogic_instance)
     }
   }
@@ -142,7 +129,7 @@ resource "aws_instance" "Master1" {
     connection {
       type        = "ssh"
       user        = var.user  # Update for your AMI's default user
-      private_key = file("C:/Terraform/create-domain/oracleweblogickey.pem")
+      private_key = file("C:/Users/Afiya/Downloads/Masterpem.pem")
       host        = self.public_ip  # 'self' refers to the current resource (aws_instance.weblogic_instance)
     }
   }
